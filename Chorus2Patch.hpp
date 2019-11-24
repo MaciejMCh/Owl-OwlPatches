@@ -74,11 +74,13 @@ private:
     
     
 public:
+    float depth, tone, mix, _delayTime, chorusSum, rate;
+    
     Chorus2Patch() {
-        registerParameter(PARAMETER_A, "Rate");
-        registerParameter(PARAMETER_B, "Depth");
-        registerParameter(PARAMETER_C, "Tone");
-        registerParameter(PARAMETER_D, "Mix");
+//        registerParameter(PARAMETER_A, "Rate");
+//        registerParameter(PARAMETER_B, "Depth");
+//        registerParameter(PARAMETER_C, "Tone");
+//        registerParameter(PARAMETER_D, "Mix");
         AudioBuffer* buffer = createMemoryBuffer(1, CHORUS2_BUFFER_SIZE);
 
         bufferSize = buffer-> getSize();
@@ -86,6 +88,11 @@ public:
         v2Buf.initialise(buffer->getSamples(0), bufferSize);
         v3Buf.initialise(buffer->getSamples(0), bufferSize);
         fs = getSampleRate();
+        
+        _delayTime = 0.5;
+        depth = 0.5;
+        tone = 0.5;
+        mix = 0.5;
         
     }
     float phaseCalc(float rate, int voiceIndex) {
@@ -101,14 +108,9 @@ public:
 //
 //    };
     void processAudio(AudioBuffer &buffer) {
-        float depth, tone, mix, _delayTime, chorusSum, rate;
         float toneSample;
         float delaySamples;
 
-        _delayTime = getParameterValue(PARAMETER_A);
-        depth = getParameterValue(PARAMETER_B);
-        tone = getParameterValue(PARAMETER_C);
-        mix = getParameterValue(PARAMETER_D);
         tf.setTone(tone);
 
         delayTime = 0.01*_delayTime + 0.99*delayTime;
@@ -122,7 +124,7 @@ public:
             v2Buf.write(toneSample);
             v3Buf.write(toneSample);
 //            chorusSum = v1Buf.read(delaySamples) + v2Buf.read(delaySamples*0.7) + v3Buf.read(delaySamples*0.4);
-            chorusSum = v1Buf.readInterp(phaseCalc(rate,0)*delaySamples) + v2Buf.readInterp(phaseCalc(rate*0.7,1)*delaySamples) + v3Buf.readInterp(phaseCalc(rate*0.4,2)*delaySamples);
+            chorusSum = v1Buf.interpolate(phaseCalc(rate,0)*delaySamples) + v2Buf.interpolate(phaseCalc(rate*0.7,1)*delaySamples) + v3Buf.interpolate(phaseCalc(rate*0.4,2)*delaySamples);
             buf[i] = buf[i] * (1-mix) + chorusSum * (mix);
         }
 

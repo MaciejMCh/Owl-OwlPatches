@@ -40,15 +40,15 @@ public:
   FixedDelayPatch() {
     AudioBuffer* buffer = createMemoryBuffer(1, REQUEST_BUFFER_SIZE);
     delayBuffer.initialise(buffer->getSamples(0), buffer->getSize());
-    registerParameter(PARAMETER_A, "Feedback");
-    registerParameter(PARAMETER_B, "Mix");
-    registerParameter(PARAMETER_C, "");    
-    registerParameter(PARAMETER_D, "");    
+//    registerParameter(PARAMETER_A, "Feedback");
+//    registerParameter(PARAMETER_B, "Mix");
+//    registerParameter(PARAMETER_C, "");
+//    registerParameter(PARAMETER_D, "");
   }
   void processAudio(AudioBuffer &buffer) {
     float* x = buffer.getSamples(0);
-    float feedback = getParameterValue(PARAMETER_A);
-    float mix = getParameterValue(PARAMETER_B);
+      float feedback = 1;//getParameterValue(PARAMETER_A);
+      float mix = 0.5;//getParameterValue(PARAMETER_B);
     for(int n = 0; n < buffer.getSize(); n++){
       x[n] = delayBuffer.tail()*mix + x[n]*(1.0f-mix);
       delayBuffer.write(feedback * x[n]);

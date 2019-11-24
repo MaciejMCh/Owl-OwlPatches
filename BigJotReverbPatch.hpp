@@ -692,11 +692,11 @@ public:
       theReverbBlock.reverbInitialize();
 
       static const float delta = 0.05;
-      roomSizeSeconds = getFloatParameter("Room Size", 0.15, 0.6, 0.4, 0.0, delta);
-      predelaySeconds = getFloatParameter("Predelay", 0, 0.1, 0, 0.0, delta);
-      reverbTimeSeconds = getFloatParameter("Decay", 1, 10, 5, 0.0, delta);
-      dryWet = getFloatParameter("Dry/Wet", 0, 1.0, 0.5, 0.95, delta);
-      cutoffFrequency = getFloatParameter("Tone", 16000, 1000, 8000, 0.0, delta); // reversed range 16k to 1k
+        roomSizeSeconds = 0.4;//getFloatParameter("Room Size", 0.15, 0.6, 0.4, 0.0, delta);
+        predelaySeconds = 0.1;//getFloatParameter("Predelay", 0, 0.1, 0, 0.0, delta);
+        reverbTimeSeconds = 1;//getFloatParameter("Decay", 1, 10, 5, 0.0, delta);
+        dryWet = 0.5;//getFloatParameter("Dry/Wet", 0, 1.0, 0.5, 0.95, delta);
+        cutoffFrequency = 8000;//getFloatParameter("Tone", 16000, 1000, 8000, 0.0, delta); // reversed range 16k to 1k
       setParams();
     }
     
@@ -725,11 +725,11 @@ private:
   BigJotReverb<CHUNK_SIZE> theReverbBlock;
   
   // reverbBlock theReverbBlock;
-  FloatParameter cutoffFrequency;
-  FloatParameter roomSizeSeconds;
-  FloatParameter reverbTimeSeconds;
-  FloatParameter dryWet;
-  FloatParameter predelaySeconds;
+  float cutoffFrequency;
+  float roomSizeSeconds;
+  float reverbTimeSeconds;
+  float dryWet;
+  float predelaySeconds;
 };
 
 #endif // __BigJotReverbPatch_hpp__

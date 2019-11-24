@@ -93,23 +93,35 @@ private:
 };
 
 class LpfDelayPatch : public Patch {
-  static const int REQUEST_BUFFER_SIZE = 1<<16;
+  static const int REQUEST_BUFFER_SIZE_XD = 1<<16;
 private:
   CircularBuffer* delayBuffer;
   int delay;
   float alpha, dryWet;
   LpfDelay::ToneBiquad filter;
   StereoBiquadFilter* highpass;
+    
+    float delayParameter;
+    float feedback;
+    float cutoff;
+    float mix;
+    float modulation;
 public:
   LpfDelayPatch() : delay(0), alpha(0.04), dryWet(0.f){
-    registerParameter(PARAMETER_A, "Delay");
-    registerParameter(PARAMETER_B, "Feedback");
-    registerParameter(PARAMETER_C, "Cutoff");
-    registerParameter(PARAMETER_D, "Dry/Wet");
-    registerParameter(PARAMETER_E, "Cutoff Modulation");
-    delayBuffer = CircularBuffer::create(REQUEST_BUFFER_SIZE);
+      
+      delayParameter = 0.3;
+      feedback = 1;
+      cutoff = 0.5;
+      mix = 0.5;
+      modulation = 0.5;
+//    registerParameter(PARAMETER_A, "Delay");
+//    registerParameter(PARAMETER_B, "Feedback");
+//    registerParameter(PARAMETER_C, "Cutoff");
+//    registerParameter(PARAMETER_D, "Dry/Wet");
+//    registerParameter(PARAMETER_E, "Cutoff Modulation");
+    delayBuffer = CircularBuffer::create(REQUEST_BUFFER_SIZE_XD);
     filter.init();
-    filter.setCoeffs(getParameterValue(PARAMETER_C), getSampleRate()); // Tone
+    filter.setCoeffs(cutoff, getSampleRate()); // Tone
     filter.updateStateCoeffs();
     highpass = StereoBiquadFilter::create(1);
     highpass->setHighPass(40/(getSampleRate()/2), FilterStage::BUTTERWORTH_Q); // dc filter
@@ -120,14 +132,14 @@ public:
   }
   void processAudio(AudioBuffer &buffer){
     float delayTime, feedback, fc, dly;
-    delayTime = 0.05+0.95*getParameterValue(PARAMETER_A);
-    feedback  = getParameterValue(PARAMETER_B);
-    fc = 2*powf(10,3*getParameterValue(PARAMETER_C)*(1-getParameterValue(PARAMETER_E))+1)+40;
+    delayTime = 0.05+0.95*delayParameter;
+    feedback  = feedback;
+    fc = 2*powf(10,3*cutoff*(1-modulation)+1)+40;
     filter.setCoeffs(fc, getSampleRate());
         
     int32_t newDelay;
     newDelay = alpha*delayTime*(delayBuffer->getSize()-1) + (1-alpha)*delay; // Smoothing
-    dryWet = alpha*getParameterValue(PARAMETER_D) + (1-alpha)*dryWet;       // Smoothing        
+    dryWet = alpha*mix + (1-alpha)*dryWet;       // Smoothing
     float* x = buffer.getSamples(0);
     int size = buffer.getSize();
     highpass->process(buffer);

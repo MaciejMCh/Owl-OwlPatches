@@ -1,6 +1,8 @@
 #ifndef __CircularBuffer_h__
 #define __CircularBuffer_h__
 
+#include "FloatArray.h"
+
 class CircularBuffer {
 private:
   FloatArray buffer;
@@ -14,6 +16,13 @@ public:
   /** 
    * write to the tail of the circular buffer 
    */
+    
+    void initialise(FloatArray floatArray, int bufferSize) {
+        FloatArray *f = new FloatArray((float *)malloc(bufferSize * sizeof(float)), bufferSize);
+        f->copyFrom(floatArray);
+        this->buffer = *f;
+    }
+    
   inline void write(float value){
     if(++writeIndex == (unsigned int)buffer.getSize())
       writeIndex = 0;

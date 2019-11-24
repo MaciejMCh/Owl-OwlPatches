@@ -75,10 +75,10 @@ private:
 public:
     FreeVerbPatch(){
         gain = fixedgain;
-        registerParameter(PARAMETER_A, "Room Size");
-        registerParameter(PARAMETER_B, "Damp");
-        registerParameter(PARAMETER_C, "");
-        registerParameter(PARAMETER_D, "Dry/Wet");
+//        registerParameter(PARAMETER_A, "Room Size");
+//        registerParameter(PARAMETER_B, "Damp");
+//        registerParameter(PARAMETER_C, "");
+//        registerParameter(PARAMETER_D, "Dry/Wet");
         
         // Tie the components to their buffers
         combL[0].setbuffer(bufcombL1,combtuningL1);
@@ -203,9 +203,9 @@ public:
     float	bufallpassL4[allpasstuningL4];
     
     void processAudio(AudioBuffer& buffer){
-        float _roomsize = getParameterValue(PARAMETER_A);
-        float _damp = getParameterValue(PARAMETER_B);
-        float _mix = getParameterValue(PARAMETER_D);
+        float _roomsize = 0.5;//getParameterValue(PARAMETER_A);
+        float _damp = 0.5;//getParameterValue(PARAMETER_B);
+        float _mix = 0.5;//getParameterValue(PARAMETER_D);
         //    float _gain = getParameterValue(PARAMETER_C);
         setdry(1.0f-_mix);
         setwet(_mix);

@@ -28,6 +28,7 @@
 #define __FlangerPatch_hpp__
 
 #include "CircularBuffer.hpp"
+#include "StompBox.h"
 
 #define FLANGER_BUFFER_SIZE 1024
 
@@ -40,12 +41,25 @@ public:
   FlangerPatch(){
     AudioBuffer* buffer = createMemoryBuffer(1, FLANGER_BUFFER_SIZE);
     delayBuffer.initialise(buffer->getSamples(0), buffer->getSize());
-    registerParameter(PARAMETER_A, "Rate");
-    registerParameter(PARAMETER_B, "Depth");
-    registerParameter(PARAMETER_C, "Feedback");
-    registerParameter(PARAMETER_D, "");    
+//    registerParameter(PARAMETER_A, "Rate");
+//    registerParameter(PARAMETER_B, "Depth");
+//    registerParameter(PARAMETER_C, "Feedback");
+//    registerParameter(PARAMETER_D, "");    
     phase = 0;
   }
+    
+    void setRate(float rate) {
+        this->rate = rate;
+    }
+    
+    void setDepth(float depth) {
+        this->depth = depth;
+    }
+    
+    void setFeedback(float feedback) {
+        this->feedback = feedback;
+    }
+    
   float modulate(float rate) {
     phase += rate;
     if ( phase >= 1.0 ) {
@@ -57,9 +71,9 @@ public:
     int size = buffer.getSize();
     unsigned int delaySamples;
       
-    rate     = getParameterValue(PARAMETER_A) * 0.000005f; // flanger needs slow rate
-    depth    = getParameterValue(PARAMETER_B);
-    feedback = getParameterValue(PARAMETER_C)* 0.707; // so we keep a -3dB summation of the delayed signal
+      rate      = 0.000009;//Rate(getParameterValue(PARAMETER_A));
+      depth     = 0.3;//getParameterValue(PARAMETER_B);
+      feedback  = 0.5;//getParameterValue(PARAMETER_C);
       
     for (int ch = 0; ch<buffer.getChannels(); ++ch) {
         for (int i = 0 ; i < size; i++) {
