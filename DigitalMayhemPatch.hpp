@@ -43,10 +43,10 @@ private:
         const float fs;
 public:
   DigitalMayhemPatch() : fs(getSampleRate()) {
-    registerParameter(PARAMETER_A, "Sampling Freq");
-    registerParameter(PARAMETER_B, "Mayhem Rate");
-    registerParameter(PARAMETER_C, "Mayhem Freq");
-    registerParameter(PARAMETER_D, "Mayhem Depth");
+//    registerParameter(PARAMETER_A, "Sampling Freq");
+//    registerParameter(PARAMETER_B, "Mayhem Rate");
+//    registerParameter(PARAMETER_C, "Mayhem Freq");
+//    registerParameter(PARAMETER_D, "Mayhem Depth");
 	
 	mayhem_freq = 1;	//starting freq = 1*fs/size = 375 Hz
 	inc_flag = 1;
@@ -59,22 +59,24 @@ public:
 
     int size = buffer.getSize();
 	
-	float samp_float = getParameterValue(PARAMETER_A);
+      float samp_float = 0.5;//getParameterValue(PARAMETER_A);
 	int samp_freq = ceil(samp_float*63+0.1);
 	
-	float mayhem_rate = getParameterValue(PARAMETER_B);
+      float mayhem_rate = 0.5;//getParameterValue(PARAMETER_B);
 	mayhem_rate *= 0.03;
 	float mayhem = 1;
 	
-	if(abs(getParameterValue(PARAMETER_C)*2+1-prev_freq)>0.01)	//if the knob was turned
+      float paramc = 0.5;
+      
+	if(abs(paramc*2+1-prev_freq)>0.01)	//if the knob was turned
 	{
-		mayhem_freq = getParameterValue(PARAMETER_C);	//update center frequency					
+		mayhem_freq = paramc;	//update center frequency
 		mayhem_freq *= 2;
 		mayhem_freq += 1;			//mayhem_freq range = 1 to 3 --> 375 -- 1125 Hz
 		prev_freq = mayhem_freq;	//store value to compare next time	
 	}
 	
-	float mayhem_depth = getParameterValue(PARAMETER_D);
+      float mayhem_depth = 0.5;//getParameterValue(PARAMETER_D);
 	mayhem_depth *= depth;
 	
     //for(int ch=0; ch<buffer.getChannels(); ++ch){

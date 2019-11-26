@@ -26,24 +26,28 @@ private:
   KarplusData data;
 public:
   KarplusStrongPatch(){
-    registerParameter(PARAMETER_A, "Freq");
-    registerParameter(PARAMETER_B, "Amp");
-    registerParameter(PARAMETER_C, "Tension");
-    registerParameter(PARAMETER_D, "Duration");
+//    registerParameter(PARAMETER_A, "Freq");
+//    registerParameter(PARAMETER_B, "Amp");
+//    registerParameter(PARAMETER_C, "Tension");
+//    registerParameter(PARAMETER_D, "Duration");
     initializeKarplus();
   }
 
   void processAudio(AudioBuffer &buffer){
-    data.numSamps = getParameterValue(PARAMETER_A) * (KP_NUM_SAMPLES-8)+8;
-    data.amp = getParameterValue(PARAMETER_B);
-    data.g = getParameterValue(PARAMETER_C)*(0.5-0.48)+0.48;
-    data.duration = getParameterValue(PARAMETER_D) * KP_NUM_BUFFER;
+      float aParam = 0.5;
+      float bParam = 0.5;
+      float cParam = 0.5;
+      float dParam = 0.5;
+    data.numSamps = aParam * (KP_NUM_SAMPLES-8)+8;
+    data.amp = bParam;
+    data.g = cParam*(0.5-0.48)+0.48;
+    data.duration = dParam * KP_NUM_BUFFER;
 
-    if(isButtonPressed(PUSHBUTTON) && !data.noteOn){
+//    if(isButtonPressed(PUSHBUTTON) && !data.noteOn){
       data.noteOn = true;
-      setButton(GREEN_BUTTON, true);
-      setButton(PUSHBUTTON, true);
-    }
+//      setButton(GREEN_BUTTON, true);
+//      setButton(PUSHBUTTON, true);
+//    }
     int size = buffer.getSize();
     float* left = buffer.getSamples(0);
     float* right = buffer.getChannels() > 1 ? buffer.getSamples(1) : left;
@@ -66,8 +70,8 @@ public:
 	  // if we have reached the end of our duration
 	  data.phase = 0;
 	  data.noteOn = false;
-	  setButton(RED_BUTTON, true);
-	  setButton(PUSHBUTTON, false);
+//      setButton(RED_BUTTON, true);
+//      setButton(PUSHBUTTON, false);
 	}else{
 	  data.phase++;
 	}

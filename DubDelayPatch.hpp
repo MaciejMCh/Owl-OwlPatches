@@ -40,7 +40,7 @@
 class DubDelayPatch : public Patch {
     
 private:
-    static const int REQUEST_BUFFER_SIZE = 1<<15;
+    static const int REQUEST_BUFFER_SIZE_DDP = 1<<15;
     CircularBuffer* delayBuffer;
     ToneFilter tf;
     float delayTime = 0;
@@ -48,11 +48,12 @@ private:
     BiquadFilter* highpass;    
 public:
     DubDelayPatch() {
-        registerParameter(PARAMETER_A, "Time");
-        registerParameter(PARAMETER_B, "Feedback");
-        registerParameter(PARAMETER_C, "Tone");
-        registerParameter(PARAMETER_D, "Wet");
-	delayBuffer = CircularBuffer::create(REQUEST_BUFFER_SIZE);
+//        registerParameter(PARAMETER_A, "Time");
+//        registerParameter(PARAMETER_B, "Feedback");
+//        registerParameter(PARAMETER_C, "Tone");
+//        registerParameter(PARAMETER_D, "Wet");
+	delayBuffer = CircularBuffer::create(REQUEST_BUFFER_SIZE_DDP);
+        delayBuffer->initialise((float *)malloc(REQUEST_BUFFER_SIZE_DDP * sizeof(float)), REQUEST_BUFFER_SIZE_DDP);
 	highpass = BiquadFilter::create(1);
 	highpass->setHighPass(40/(getSampleRate()/2), FilterStage::BUTTERWORTH_Q); // dc filter
     }
@@ -65,10 +66,12 @@ public:
 
         float feedback, wet, _delayTime, _tone, delaySamples;
 
-        _delayTime = getParameterValue(PARAMETER_A);
-        feedback = 2*getParameterValue(PARAMETER_B)+0.01;
-        _tone = getParameterValue(PARAMETER_C);
-        wet = getParameterValue(PARAMETER_D);
+        _delayTime = 0.7;//getParameterValue(PARAMETER_A);
+        
+        float feedbackParameterValue = 0.5;
+        feedback = 2*feedbackParameterValue+0.01;
+        _tone = 0.5;//getParameterValue(PARAMETER_C);
+        wet = 0.6;//getParameterValue(PARAMETER_D);
 
         tone = 0.05*_tone + 0.95*tone;
         tf.setTone(tone);

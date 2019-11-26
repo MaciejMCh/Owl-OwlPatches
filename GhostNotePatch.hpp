@@ -40,11 +40,11 @@ private:
 public:
   GhostNotePatch()
   {
-    registerParameter(PARAMETER_A, "Gain");
-    registerParameter(PARAMETER_B, "Window");
-    registerParameter(PARAMETER_C, "Frequency");
-    registerParameter(PARAMETER_D, "Wet");
-    registerParameter(PARAMETER_E, "Freq Mod");
+//    registerParameter(PARAMETER_A, "Gain");
+//    registerParameter(PARAMETER_B, "Window");
+//    registerParameter(PARAMETER_C, "Frequency");
+//    registerParameter(PARAMETER_D, "Wet");
+//    registerParameter(PARAMETER_E, "Freq Mod");
 	
 	window_index = 0;
 	prev_samp = 0;
@@ -55,17 +55,23 @@ public:
   
   void processAudio(AudioBuffer &buffer)
   {
+      float aParam = 0.5;
+      float bParam = 0.5;
+      float cParam = 0.5;
+      float dParam = 0.5;
+      float eParam = 0.5;
+      
 	int size = buffer.getSize();
-	float expr = 1 - getParameterValue(PARAMETER_E);
-	float window_size_factor = getParameterValue(PARAMETER_B);     //
+	float expr = 1 - eParam;
+	float window_size_factor = bParam;     //
 	unsigned int window_size = round(window_size_factor*8192);
 	window_size += size;	//window size should never equal 0
 	if(window_size%size != 0) window_size -= window_size%size; //make sure window size is integer multiple of buffer size
 	window_size += size;	//window size should never equal 0
-	float gain = getParameterValue(PARAMETER_A);
-	float freq_factor = expr*getParameterValue(PARAMETER_C);
+	float gain = aParam;
+	float freq_factor = expr*cParam;
 	freq_factor += 0.01;
-	float wet = getParameterValue(PARAMETER_D);
+	float wet = dParam;
 
 	
     //for(int ch=0; ch<buffer.getChannels(); ch++)

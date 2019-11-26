@@ -87,18 +87,23 @@ private:
 
 public:
   EnvelopeFilterPatch(){
-    registerParameter(PARAMETER_A, "Cutoff");
-    registerParameter(PARAMETER_B, "Range");
-    registerParameter(PARAMETER_C, "Q");
-    registerParameter(PARAMETER_D, "Dry/Wet");
+//    registerParameter(PARAMETER_A, "Cutoff");
+//    registerParameter(PARAMETER_B, "Range");
+//    registerParameter(PARAMETER_C, "Q");
+//    registerParameter(PARAMETER_D, "Dry/Wet");
   }
 	
   void processAudio(AudioBuffer& buffer){
+      float aParam = 0.5;
+      float bParam = 0.5;
+      float cParam = 0.5;
+      float dParam = 0.5;
+      
     int size = buffer.getSize();
-    float cutoff = getParameterValue(PARAMETER_A);
-    float range = sqrtf(getParameterValue(PARAMETER_B))*1000;
-    float Q = 3+getParameterValue(PARAMETER_C)*9;
-    float mix = getParameterValue(PARAMETER_D);
+    float cutoff = aParam;
+    float range = sqrtf(bParam)*1000;
+    float Q = 3+cParam*9;
+    float mix = dParam;
     cutoff = 100 + cutoff * 1500;
 
     float* left = buffer.getSamples(0);

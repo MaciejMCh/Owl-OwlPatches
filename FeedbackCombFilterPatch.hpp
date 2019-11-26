@@ -28,24 +28,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define __FeedbackCombFilter_h__
 
 #include "StompBox.h"
-#include "JuceHeader.h"
+#include "AudioSampleBuffer.hpp"
+//#include "JuceHeader.h"
 class FeedbackCombFilter : public Patch {
 public:
 	FeedbackCombFilter():
 		delayBuffer_(1,1)
 	{
-		registerParameter(PARAMETER_A, "Frequency");
-		registerParameter(PARAMETER_B, "Spread");
-		registerParameter(PARAMETER_C, "Feedback");
-		registerParameter(PARAMETER_D, "Depth");
+//        registerParameter(PARAMETER_A, "Frequency");
+//        registerParameter(PARAMETER_B, "Spread");
+//        registerParameter(PARAMETER_C, "Feedback");
+//        registerParameter(PARAMETER_D, "Depth");
 		delayBuffer_.setSize(2, delayBufferLength_);
 		delayBuffer_.clear();
 	}
 	void processAudio(AudioBuffer &buffer){
-		frequency_ = 10 * powf(40, getParameterValue(PARAMETER_A));
-		spread_ = getParameterValue(PARAMETER_B);
-		float newFeedback = getParameterValue(PARAMETER_C)*(1.0 / (numVoices_ - 1))*1.6; //this range allows to push above the limit but should be limited by the limiter below
-		depth_ = getParameterValue(PARAMETER_D);
+        float parameter_A = 0.5;
+        float parameter_B = 0.5;
+        float parameter_C = 0.5;
+        float parameter_D = 0.5;
+        
+		frequency_ = 10 * powf(40, parameter_A);
+		spread_ = parameter_B;
+		float newFeedback = parameter_C*(1.0 / (numVoices_ - 1))*1.6; //this range allows to push above the limit but should be limited by the limiter below
+		depth_ = parameter_D;
 		for (int j = 0; j < numVoices_ - 1; j++){
 			frequencies_[j] = frequency_*(1 + spread_*j);
 			newDelays_[j] = 1 / frequencies_[j];

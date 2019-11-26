@@ -46,14 +46,14 @@ public:
   }
 
   void processAudio(AudioBuffer &buffer){
-      float gain = 1;//getParameterValue(PARAMETER_A);
+      float gain = 0.5;//getParameterValue(PARAMETER_A);
     gain = gain*gain*2.0;
-      float iterations = 0.5;//getParameterValue(PARAMETER_B);
-      float r = 0.5;//getParameterValue(PARAMETER_C)*(maxR-minR) + minR;
+      float iterations = 0.35;//getParameterValue(PARAMETER_B);
+      float r = 0.5*(maxR-minR) + minR;//getParameterValue(PARAMETER_C)*(maxR-minR) + minR;
     iterations = iterations*iterations*maxI;
     int size = buffer.getSize();
     FloatArray left = buffer.getSamples(LEFT_CHANNEL);
-    FloatArray right = buffer.getSamples(RIGHT_CHANNEL);
+      FloatArray right = left;//buffer.getSamples(RIGHT_CHANNEL);
       float wet = 0.5;//getParameterValue(PARAMETER_D);
     for(int i=0; i<size; i++){
       left[i] = processSample(gain*left[i], iterations, r) * wet + left[i]*(1-wet);

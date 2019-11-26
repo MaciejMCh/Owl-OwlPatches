@@ -69,9 +69,9 @@ public:
   };
   void processAudio(AudioBuffer &buffer){
     int size = buffer.getSize();
-    unsigned int delaySamples;
+    float delaySamples;
       
-      rate      = 0.000009;//Rate(getParameterValue(PARAMETER_A));
+      rate      = 0.0000009;//Rate(getParameterValue(PARAMETER_A));
       depth     = 0.3;//getParameterValue(PARAMETER_B);
       feedback  = 0.5;//getParameterValue(PARAMETER_C);
       
@@ -79,7 +79,7 @@ public:
         for (int i = 0 ; i < size; i++) {
             float* buf = buffer.getSamples(ch);
             delaySamples = (depth * modulate(rate)) * (delayBuffer.getSize()-1); // compute delay according to rate and depth
-            buf[i] += feedback * delayBuffer.read(delaySamples); // add scaled delayed signal to dry signal
+            buf[i] += feedback * delayBuffer.interpolate(delaySamples); // add scaled delayed signal to dry signal
             delayBuffer.write(buf[i]); // update delay buffer
         }
     }

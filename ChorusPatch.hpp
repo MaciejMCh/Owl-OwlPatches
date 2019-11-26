@@ -19,10 +19,10 @@ private:
 public:
   ChorusPatch(){
      
-    registerParameter(PARAMETER_A, "RATE");
-      registerParameter(PARAMETER_B, "DEPTH");
-        registerParameter(PARAMETER_C, "WET/DRY ");
-      registerParameter(PARAMETER_D, "VOICES");
+//    registerParameter(PARAMETER_A, "RATE");
+//      registerParameter(PARAMETER_B, "DEPTH");
+//        registerParameter(PARAMETER_C, "WET/DRY ");
+//      registerParameter(PARAMETER_D, "VOICES");
       
     
     AudioBuffer* buffer = createMemoryBuffer(1, CHORUS_PATCH_REQUEST_BUFFER_SIZE);
@@ -44,10 +44,10 @@ public:
       int32_t voiceWidth = 0;
       float rate, depth, mix, voicesParam;
       double sampleRate = getSampleRate();
-      rate = getParameterValue(PARAMETER_A) * 3 ;
-      depth = getParameterValue(PARAMETER_B) * maxDelay; // get the depth relative to the maximum delay
-      mix   = getParameterValue(PARAMETER_C);
-      voicesParam = getParameterValue(PARAMETER_D);
+      rate = 1.5;//getParameterValue(PARAMETER_A) * 3 ;
+      depth = 0.5 * maxDelay;//getParameterValue(PARAMETER_B) * maxDelay; // get the depth relative to the maximum delay
+      mix   = 0.5;//getParameterValue(PARAMETER_C);
+      voicesParam = 0.5;//getParameterValue(PARAMETER_D);
 
       float sineWave;
       float* x = buffer.getSamples(0);

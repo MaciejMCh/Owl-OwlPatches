@@ -54,14 +54,18 @@ private:
     
 public:
     EnvelopeDelayPatch() {
-        registerParameter(PARAMETER_A, "Configuration");
-        registerParameter(PARAMETER_B, "Thresholds");
-        registerParameter(PARAMETER_C, "Time");
-        registerParameter(PARAMETER_D, "Mix");
+//        registerParameter(PARAMETER_A, "Configuration");
+//        registerParameter(PARAMETER_B, "Thresholds");
+//        registerParameter(PARAMETER_C, "Time");
+//        registerParameter(PARAMETER_D, "Mix");
         
 	v0Buf = CircularBuffer::create(BUFFER_SIZE);
 	v1Buf = CircularBuffer::create(BUFFER_SIZE);
 	v2Buf = CircularBuffer::create(BUFFER_SIZE);
+        
+        v0Buf->initialise((float *)malloc(BUFFER_SIZE * sizeof(float)), BUFFER_SIZE);
+        v1Buf->initialise((float *)malloc(BUFFER_SIZE * sizeof(float)), BUFFER_SIZE);
+        v2Buf->initialise((float *)malloc(BUFFER_SIZE * sizeof(float)), BUFFER_SIZE);
     }
 
     ~EnvelopeDelayPatch() {
@@ -121,10 +125,12 @@ public:
         float conf, _time, mix, _mix;
         int delaySamples;
 
-        conf = getParameterValue(PARAMETER_A);
-        _thresh = getParameterValue(PARAMETER_B) * 4;
-        _time = getParameterValue(PARAMETER_C);
-        mix = getParameterValue(PARAMETER_D);
+        float paramB = 0.5;
+        
+        conf = 0.5;//getParameterValue(PARAMETER_A);
+        _thresh = paramB * 4;
+        _time = 0.5;//getParameterValue(PARAMETER_C);
+        mix = 0.5;//getParameterValue(PARAMETER_D);
         _mix = 1-mix;
         setConf(conf);
 
