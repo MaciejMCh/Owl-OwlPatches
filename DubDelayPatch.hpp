@@ -40,14 +40,13 @@
 class DubDelayPatch : public Patch {
     
 private:
-    static const int REQUEST_BUFFER_SIZE_DDP = 1<<15;
+    static const long REQUEST_BUFFER_SIZE_DDP = 1<<16;
     CircularBuffer* delayBuffer;
     ToneFilter tf;
-    float delayTime = 0;
     float tone = 0;
     BiquadFilter* highpass;    
 public:
-    float feedback, wet, _delayTime, _tone, delaySamples;
+    float feedback, wet, _tone, delaySamples;
     
     DubDelayPatch() {
 //        registerParameter(PARAMETER_A, "Time");
@@ -79,8 +78,6 @@ public:
         FloatArray buf = buffer.getSamples(LEFT_CHANNEL);
 	highpass->process(buf);
         for (int i = 0 ; i < buffer.getSize(); i++) {
-            delayTime = 0.01*_delayTime + 0.99*delayTime;
-            delaySamples = delayTime * (delayBuffer->getSize()-1);
             buf[i] = dist(tf.processSample(buf[i] + (wet * delayBuffer->read(delaySamples))));
             // delayBuffer->write(dist(tf.processSample(feedback * buf[i],0)));
             delayBuffer->write(feedback * buf[i]);
