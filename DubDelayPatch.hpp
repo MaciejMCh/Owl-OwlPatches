@@ -47,6 +47,8 @@ private:
     float tone = 0;
     BiquadFilter* highpass;    
 public:
+    float feedback, wet, _delayTime, _tone, delaySamples;
+    
     DubDelayPatch() {
 //        registerParameter(PARAMETER_A, "Time");
 //        registerParameter(PARAMETER_B, "Feedback");
@@ -64,9 +66,7 @@ public:
     }
     void processAudio(AudioBuffer &buffer) {
 
-        float feedback, wet, _delayTime, _tone, delaySamples;
-
-        _delayTime = 0.7;//getParameterValue(PARAMETER_A);
+//        _delayTime = 0.7;//getParameterValue(PARAMETER_A);
         
         float feedbackParameterValue = 0.5;
         feedback = 2*feedbackParameterValue+0.01;
