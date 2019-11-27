@@ -69,7 +69,6 @@ public:
         
         float feedbackParameterValue = 0.5;
         feedback = 2*feedbackParameterValue+0.01;
-        _tone = 0.5;//getParameterValue(PARAMETER_C);
         wet = 0.6;//getParameterValue(PARAMETER_D);
 
         tone = 0.05*_tone + 0.95*tone;
