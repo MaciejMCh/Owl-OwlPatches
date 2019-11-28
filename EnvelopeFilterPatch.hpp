@@ -84,26 +84,26 @@ class EnvelopeFilterPatch : public Patch {
 private:
   EnvelopeFilter::LPF filterL, filterR;
   EnvelopeFilter::Follower followL, followR;
-
+    
 public:
-  EnvelopeFilterPatch(){
-//    registerParameter(PARAMETER_A, "Cutoff");
-//    registerParameter(PARAMETER_B, "Range");
-//    registerParameter(PARAMETER_C, "Q");
-//    registerParameter(PARAMETER_D, "Dry/Wet");
-  }
+    float _cutOff = 0.5;
+    float _range = 0.5;
+    float _q = 0.5;
+    float _wet = 0.5;
+    
+    EnvelopeFilterPatch(){
+        //    registerParameter(PARAMETER_A, "Cutoff");
+        //    registerParameter(PARAMETER_B, "Range");
+        //    registerParameter(PARAMETER_C, "Q");
+        //    registerParameter(PARAMETER_D, "Dry/Wet");
+    }
 	
   void processAudio(AudioBuffer& buffer){
-      float aParam = 0.5;
-      float bParam = 0.5;
-      float cParam = 0.5;
-      float dParam = 0.5;
-      
     int size = buffer.getSize();
-    float cutoff = aParam;
-    float range = sqrtf(bParam)*1000;
-    float Q = 3+cParam*9;
-    float mix = dParam;
+    float cutoff = _cutOff;
+    float range = sqrtf(_range)*1000;
+    float Q = 3+_q*9;
+    float mix = _wet;
     cutoff = 100 + cutoff * 1500;
 
     float* left = buffer.getSamples(0);
